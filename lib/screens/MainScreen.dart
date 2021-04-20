@@ -1,9 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_htpp_demo/data/api/category_api.dart';
-import 'package:flutter_htpp_demo/models/category.dart';
-import 'package:flutter_htpp_demo/models/product.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class MainScreen extends StatefulWidget {
@@ -12,13 +8,9 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  List<Category> categories;
-  List<Widget> categoryWidgets;
-  List<Product> products;
+
   @override
   void initState() {
-    getCategoriesFromApi();
-
     super.initState();
   }
 
@@ -30,46 +22,32 @@ class _MainScreenState extends State<MainScreen> {
         backgroundColor: Colors.blueGrey,
         centerTitle: true,
       ),
-      body: Padding(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          children: [
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: categoryWidgets.length==0?categoryWidgets:Text("Hata..."),
-                //children: categoryWidgets == null ? throw("Hata...") : categoryWidgets,
-              ),
+      body: FutureBuilder(
+        future: CategoryApi.getCategories(),
+        builder: (context,snapshot){
+          return snapshot.hasData ? Padding(
+            padding: EdgeInsets.all(10),
+            child: Column(
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height*.1,
+
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                        itemCount: snapshot.data["categories"].length,
+                        itemBuilder:(context,index){
+                      return getCategoryWidget(snapshot.data["categories"][index]);
+                    }),
+                  ),
+                ]
             ),
-          ]
-        ),
-      ),
+          ):CircularProgressIndicator();
+        },
+      )
     );
   }
 
-  void getCategoriesFromApi() {
-    CategoryApi.getCategories().then((value) {
-      debugPrint(value);
-      setState(() {
-        Iterable list = json.decode(value.body);
-        this.categories =
-            list.map((category) => Category.fromJson(category)).toList();
-        getCategoryWidgets();
-     });
-    });
-  }
-
-  List<Widget> getCategoryWidgets() {
-   
-    for (int i = 0; i < categories.length; i++) {
-      categoryWidgets.add(getCategoryWidget(categories[i]));
-    }
-    if(categoryWidgets.length > 0){ return categoryWidgets; }
-    return categoryWidgets;
-    
-  }
-
-   getCategoryWidget(Category category) {
+   getCategoryWidget(data) {
     //return TextButton(onPressed: () {}, child: Text(category.categoryName));
     return TextButton(
       onPressed: () {},
@@ -80,7 +58,7 @@ class _MainScreenState extends State<MainScreen> {
                   borderRadius: BorderRadius.circular(18.0),
                   side: BorderSide(color: Colors.red)))),
       child: Text(
-        category.categoryName,
+        data["categoryName"],
         style: TextStyle(color: Colors.blueGrey),
       ),
     );
