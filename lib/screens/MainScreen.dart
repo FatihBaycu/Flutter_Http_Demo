@@ -13,7 +13,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   List<Category> categories;
-  List<Widget> categoryWidgets;
+  List<TextButton> categoryWidgets;
   List<Product> products;
   @override
   void initState() {
@@ -24,7 +24,6 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool isLoading = false;
     return Scaffold(
       appBar: AppBar(
         title: Text("Alışveriş Sistemi", style: TextStyle(color: Colors.white)),
@@ -38,7 +37,7 @@ class _MainScreenState extends State<MainScreen> {
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: categoryWidgets,
+                children: categoryWidgets == null ? throw("Hata...") : categoryWidgets,
               ),
             ),
           ]
@@ -50,36 +49,38 @@ class _MainScreenState extends State<MainScreen> {
   void getCategoriesFromApi() {
     CategoryApi.getCategories().then((value) {
       setState(() {
-        if(value.statusCode==200){
         Iterable list = json.decode(value.body);
         this.categories =
             list.map((category) => Category.fromJson(category)).toList();
         getCategoryWidgets();
-       } });
+     });
     });
   }
 
   List<Widget> getCategoryWidgets() {
+    if(categoryWidgets.length > 0){ 
     for (int i = 0; i < categories.length; i++) {
       categoryWidgets.add(getCategoryWidget(categories[i]));
     }
-    return categoryWidgets;
+    if(categoryWidgets.length > 0){ return categoryWidgets; }
+   // return categoryWidgets;
+    }
   }
 
-  Widget getCategoryWidget(Category category) {
-   // return TextButton(onPressed: () {}, child: Text(category.categoryName));
-    return TextButton(
-      onPressed: () {},
-      // style: ButtonStyle(shape: MaterialStateProperty.all<RoundedRectangleBorder>(borderRadius:BorderRadius.circular(15))),
-      style: ButtonStyle(
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                  side: BorderSide(color: Colors.red)))),
-      child: Text(
-        category.categoryName,
-        style: TextStyle(color: Colors.blueGrey),
-      ),
-    );
+   getCategoryWidget(Category category) {
+    return TextButton(onPressed: () {}, child: Text(category.categoryName));
+    // return TextButton(
+    //   onPressed: () {},
+    //    style: ButtonStyle(shape: MaterialStateProperty.all<RoundedRectangleBorder>(borderRadius:BorderRadius.circular(15))),
+    //   style: ButtonStyle(
+    //       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+    //           RoundedRectangleBorder(
+    //               borderRadius: BorderRadius.circular(18.0),
+    //               side: BorderSide(color: Colors.red)))),
+    //   child: Text(
+    //     category.categoryName,
+    //     style: TextStyle(color: Colors.blueGrey),
+    //   ),
+    // );
   }
 }
