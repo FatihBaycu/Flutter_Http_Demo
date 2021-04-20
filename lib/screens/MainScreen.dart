@@ -37,7 +37,8 @@ class _MainScreenState extends State<MainScreen> {
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: categoryWidgets == null ? throw("Hata...") : categoryWidgets,
+                children: categoryWidgets,
+                //children: categoryWidgets == null ? throw("Hata...") : categoryWidgets,
               ),
             ),
           ]
