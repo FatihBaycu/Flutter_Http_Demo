@@ -9,16 +9,18 @@ class Product {
   Product.withId({id,categoryId,productName,quantityPerUnit,unitPrice,unitsInStock});
   Product({categoryId,productName,quantityPerUnit,unitPrice,unitsInStock});
 
-  Product.fromJson(Map json){
+   Product.fromJson(Map json){
     id=json[id];
     categoryId=json[categoryId];
     productName=json[productName];
     quantityPerUnit=json[quantityPerUnit];
-    unitPrice=json[unitPrice];
+    unitPrice=double.tryParse(json[unitPrice].toString());
     unitsInStock=json[unitsInStock];
   }
 
-    Map toJson()=>{"id":id,"categoryId":categoryId,
+    Map toJson()=>{
+      "id":id,
+      "categoryId":categoryId,
     "productName":productName,"quantityPerUnit":quantityPerUnit,
       "unitPrice":unitPrice,"unitsInStock":unitsInStock
     };

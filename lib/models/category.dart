@@ -12,6 +12,13 @@ class Category{
     seoUrl=json["seoUrl"];
   }
 
-    Map toJson()=>{"id":id,"categoryName":categoryName,"seoUrl":seoUrl};
+    Map toJson(){
+      Map categoryJsonFormat={
+      "id":id,
+      "categoryName":categoryName,
+      "seoUrl":seoUrl
+      };
+      return categoryJsonFormat;
+    }
     
 }
