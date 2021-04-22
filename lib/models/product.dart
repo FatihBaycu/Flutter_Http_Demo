@@ -10,7 +10,7 @@ class Product {
   Product({categoryId,productName,quantityPerUnit,unitPrice,unitsInStock});
 
    Product.fromJson(Map json){
-    id=json[id];
+    id=int.tryParse(json[id].toString());
     categoryId=json[categoryId];
     productName=json[productName];
     quantityPerUnit=json[quantityPerUnit];
@@ -18,12 +18,17 @@ class Product {
     unitsInStock=json[unitsInStock];
   }
 
-    Map toJson()=>{
+    Map toJson(){     
+     Map productJsonFormat={
       "id":id,
       "categoryId":categoryId,
-    "productName":productName,"quantityPerUnit":quantityPerUnit,
-      "unitPrice":unitPrice,"unitsInStock":unitsInStock
+      "productName":productName,
+      "quantityPerUnit":quantityPerUnit,
+      "unitPrice":unitPrice,
+      "unitsInStock":unitsInStock,
     };
+
+    return productJsonFormat;}
     
     
 }
