@@ -50,18 +50,22 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void getCategoriesFromApi() {
+    print("getCategoriesFromApi");
     CategoryApi.getCategories().then((response) {
       setState(() {
         Iterable list = json.decode(response.body);
         print(list);
         this.categories =
             list.map((category) => Category.fromJson(category)).toList();
+                print("getCategoriesFromApi2");
+
         getCategoryWidgets();
       });
     });
   }
 
   List<Widget> getCategoryWidgets() {
+        print("getCategoryWidgets");
     for (var category in categories) {
       categoryWidgets.add(getCategoryWidget(category));
     }
@@ -70,6 +74,8 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget getCategoryWidget(Category category) {
+            print("getCategoryWidget");
+
     var categoryFlatButton = Container(
       margin: EdgeInsets.only(right: 10),
       child: OutlinedButton(

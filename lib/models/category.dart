@@ -17,7 +17,7 @@ class Category{
       "id":id,
       "categoryName":categoryName,
       "seoUrl":seoUrl
-      };
+      }; 
       return categoryJsonFormat;
     }
     

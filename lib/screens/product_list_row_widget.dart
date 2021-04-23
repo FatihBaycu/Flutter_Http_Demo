@@ -4,7 +4,9 @@ import 'package:flutter_htpp_demo/models/product.dart';
 
 class ProductListRowWidget extends StatelessWidget {
   Product product;
+
   ProductListRowWidget(this.product);
+  
   @override
   Widget build(BuildContext context) {
     return buildProductItemCard(context);
@@ -19,7 +21,7 @@ class ProductListRowWidget extends StatelessWidget {
               child: Image.network("https://i.pinimg.com/736x/0e/35/8d/0e358d98578648662715198235ce64ee.jpg"),
                       height: 130.0, width: MediaQuery.of(context).size.width*2,
             ),
-             Text(product.productName??"Ürün Adı"),
+             Text(product.productName),
            // Text(product.unitPrice.toString()+" TL",style:TextStyle(fontSize: 18.0,color:Colors.grey)),
           ],
         ),

@@ -5,10 +5,7 @@ import 'package:flutter_htpp_demo/screens/product_list_row_widget.dart';
 class ProductListWidget extends StatefulWidget {
   List<Product> products = <Product>[];
 
-
-  ProductListWidget(List<Product> products){
-    this.products=products;
-  }
+  ProductListWidget(this.products);
 
   @override
   _ProductListWidgetState createState() => _ProductListWidgetState();
@@ -21,11 +18,10 @@ class _ProductListWidgetState extends State<ProductListWidget> {
   }
 
   Widget buildProductList(BuildContext context) {
-    return Column(
+    var productListView = Column(
       children: [
         SizedBox(
-          height: 10.0,
-        ),
+          height: 10),
         SizedBox(
           height: 500,
           child: GridView.count(
@@ -33,9 +29,10 @@ class _ProductListWidgetState extends State<ProductListWidget> {
             children: List.generate(widget.products.length, (index) {
               return ProductListRowWidget(widget.products[index]);
             }),
-          ),
-        ),
-      ],
+          ))
+   ],
     );
+   return productListView;
+
   }
 }
